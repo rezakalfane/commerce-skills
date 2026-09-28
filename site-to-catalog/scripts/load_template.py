@@ -163,9 +163,14 @@ def main():
     # ---------------- products ----------------
     done = {}
     if prod_map_file.exists():
-        done = {r["sku"]: int(r["bc_product_id"]) for r in csv.DictReader(open(prod_map_file))}
+        # key on template_product_id: sku is empty for every variant product
+        # (BC rejects a product-level sku that duplicates a variant sku), so
+        # keying on sku collapses them all into one entry -- which silently
+        # broke both resume and end-of-run channel assignment.
+        done = {r["template_product_id"]: int(r["bc_product_id"])
+                for r in csv.DictReader(open(prod_map_file))}
     failures = []
-    todo = [p for p in prods if p["sku"] not in done]
+    todo = [p for p in prods if p["product_id"] not in done]
     if args.limit:
         todo = todo[:args.limit]
     print(f"[products] {len(done)} already loaded, {len(todo)} to create")
@@ -216,7 +221,7 @@ def main():
             bc_id = resp["data"]["id"]
             pmw.writerow([p["product_id"], p["sku"], bc_id])
             pmf.flush()
-            done[p["sku"]] = bc_id
+            done[p["product_id"]] = bc_id
             print(f"  [{i}/{len(todo)}] {p['sku']} -> {bc_id}")
         else:
             failures.append({"sku": p["sku"], "status": st, "error": str(resp)[:500]})
