@@ -7,6 +7,7 @@ A collection of agent skills (`SKILL.md` format) for working with BigCommerce, C
 | [`commerce-admin`](./commerce-admin) | Perform BigCommerce store administration and merchandising tasks via the BigCommerce REST Management APIs — products, categories, inventory, promotions, orders, customers, B2B Edition, webhooks, and more. |
 | [`demo-video`](./demo-video) | Record polished multi-step product-demo videos of a locally-running web app from a small declarative scenario file — visible cursor, dev-overlay dismissal, route warm-up, and trim timestamping all built into a stored runner. |
 | [`makeswift-components`](./makeswift-components) | Create or update Makeswift page-builder components in a BigCommerce Catalyst (Next.js) storefront — registering components, adding/editing props/controls, wiring builder-editable content. |
+| [`makeswift-site-builder`](./makeswift-site-builder) | Build or restyle Makeswift pages by driving the visual builder in the browser (Claude in Chrome) with built-in components only. Covers reference-site extraction, asset prep for the file library, a section-by-section spec, and a self-improving learnings log. |
 | [`screen-capture`](./screen-capture) | Capture full-page screenshots or short interaction-video recordings of a locally-running web app using Playwright, with a synthetic visible cursor and a number of dev-server-specific fixes baked in. |
 | [`site-to-catalog`](./site-to-catalog) | Replicate a live storefront's catalog into a BigCommerce sandbox: crawl the site, parse its nav into a category tree, group offers into product families, then load and enrich categories, products, variants, swatches, inventory, and SEO via the Management API. Requires `commerce-admin`. |
 
@@ -23,7 +24,7 @@ git clone https://github.com/rezakalfane-bigcommerce/commerce-skills.git ~/dev/c
 **Claude Code** — skills live in `~/.claude/skills/`:
 
 ```bash
-for s in commerce-admin demo-video makeswift-components screen-capture site-to-catalog; do
+for s in commerce-admin demo-video makeswift-components makeswift-site-builder screen-capture site-to-catalog; do
   ln -s ~/dev/commerce-skills/$s ~/.claude/skills/$s
 done
 ```
@@ -31,7 +32,7 @@ done
 **Codex** — skills live in `~/.codex/skills/`:
 
 ```bash
-for s in commerce-admin demo-video makeswift-components screen-capture site-to-catalog; do
+for s in commerce-admin demo-video makeswift-components makeswift-site-builder screen-capture site-to-catalog; do
   ln -s ~/dev/commerce-skills/$s ~/.codex/skills/$s
 done
 ```
@@ -40,7 +41,7 @@ done
 
 ```bash
 mkdir -p ~/.config/opencode/skills
-for s in commerce-admin demo-video makeswift-components screen-capture site-to-catalog; do
+for s in commerce-admin demo-video makeswift-components makeswift-site-builder screen-capture site-to-catalog; do
   ln -s ~/dev/commerce-skills/$s ~/.config/opencode/skills/$s
 done
 ```
@@ -57,7 +58,7 @@ No git history, no full clone, via [`degit`](https://github.com/Rich-Harris/degi
 npx degit rezakalfane-bigcommerce/commerce-skills/screen-capture ~/.claude/skills/screen-capture
 ```
 
-Swap the subdirectory name (`commerce-admin`, `demo-video`, `makeswift-components`, `screen-capture`, `site-to-catalog`) to install a different one, and swap the target path for your agent: `~/.claude/skills` (Claude Code), `~/.codex/skills` (Codex), or `~/.config/opencode/skills` (OpenCode). This copies the files only — no `.git` folder, so it won't auto-update; re-run the same command to refresh.
+Swap the subdirectory name (`commerce-admin`, `demo-video`, `makeswift-components`, `makeswift-site-builder`, `screen-capture`, `site-to-catalog`) to install a different one, and swap the target path for your agent: `~/.claude/skills` (Claude Code), `~/.codex/skills` (Codex), or `~/.config/opencode/skills` (OpenCode). This copies the files only — no `.git` folder, so it won't auto-update; re-run the same command to refresh.
 
 Git-native alternative, if `npx`/degit isn't available, using sparse checkout:
 
